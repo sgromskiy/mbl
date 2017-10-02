@@ -1,0 +1,7 @@
+{
+	"/rest/*": {
+		"target": "https://mybooklib-7af0.restdb.io",
+		"logLevel": "debug",
+		"changeOrigin": true
+	}
+}
