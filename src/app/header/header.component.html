@@ -1,29 +1,30 @@
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">Auth0 - Angular</a>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+  <a class="navbar-brand" href="#" routerLink="">My Book Lib</a>
+  <!-- burger opener -->
+  <button class="navbar-toggler d-lg-none collapsed" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-      <button
-        class="btn btn-primary btn-margin"
-        routerLink="/">
-          Home
-      </button>
-
-      <button
-        class="btn btn-primary btn-margin"
-        *ngIf="!auth.isAuthenticated()"
-        (click)="auth.login()">
-          Log In
-      </button>
-
-      <button
-        class="btn btn-primary btn-margin"
-        *ngIf="auth.isAuthenticated()"
-        (click)="auth.logout()">
-          Log Out
-      </button>
-
-      <p *ngIf="user.name">Hello {{user.name}}</p>
-    </div>
+  <!-- collapsed part -->
+  <div class="navbar-collapse collapse" id="navbarsExampleDefault" style="">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" href="#" routerLink="/home">Home</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" href="#" routerLink="/about">About</a>
+      </li>
+    </ul>
+    <span *ngIf="user.name" class="navbar-text mt-2 mt-md-0">
+      Hello <a href="#" [routerLink]="['/user', user._id]"> {{user.name}}</a>
+    </span>
+    <button
+      class="btn logout btn-outline-primary ml-md-2"
+      *ngIf="auth.isAuthenticated()"
+      (click)="auth.logout()">
+        Log Out
+    </button>
   </div>
 </nav>
+
+

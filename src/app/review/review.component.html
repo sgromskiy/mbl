@@ -1,0 +1,54 @@
+
+<div class="reviews-section" >
+	<div class="review-header">
+		<h2>Last reviews:</h2>
+	</div>
+	<div *ngIf="reviews.length === 0">
+		No review yet. You could be first.
+	</div>
+	<div  class="card review" *ngFor="let review of reviews">
+		<div class="card-header">
+			<span class="rating">
+				<i *ngFor="let star of [1, 2, 3, 4, 5]; " [class]="review.Rating >= star ? 'fa fa-star' : 'fa fa-star-o'"></i>
+			</span> 
+			Posted at {{review.Posted | date:'mediumDate'}} by <a [routerLink]="['/user', review.AuthorID]"><em>{{review.AuthorName}}</em></a>
+		</div>
+		<div class="card-body" [innerHTML]="review.Comment"></div>
+	</div>
+</div>
+
+<div class="add-review-section">
+	<div class="review-header">
+		<h2>Write review:</h2>
+		{{newReview | json}}
+		<form #reviewRorm="ngForm" (ngSubmit)="onSubmit()">
+			<div class="form-group">
+				<label>Rate it: <span class="required">*</span></label>
+				<div class="star-rating">
+					<div class="star-rating-holder">
+						<input required [(ngModel)]="newReview.Rating" class="h" id="five" type="radio" value="5" name="star-rating">
+						<label for="five"><i class="fa fa-star-o"></i></label>
+						<input required [(ngModel)]="newReview.Rating" id="four" type="radio" value="4" name="star-rating">
+						<label for="four"><i class="fa fa-star-o"></i></label>
+						<input required [(ngModel)]="newReview.Rating" id="three" type="radio" value="3" name="star-rating">
+						<label for="three"><i class="fa fa-star-o"></i></label>
+						<input required [(ngModel)]="newReview.Rating" id="two" type="radio" value="2" name="star-rating">
+						<label for="two"><i class="fa fa-star-o"></i></label>
+						<input required [(ngModel)]="newReview.Rating" id="one" type="radio" value="1" name="star-rating">
+						<label for="one"><i class="fa fa-star-o"></i></label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="review">Write few words: <span class="required">*</span></label>
+				<textarea minlength="30" required name="comment" #commentField="ngModel" [(ngModel)]="newReview.Comment" class="form-control" id="review" rows="3"></textarea>
+				<app-form-field-error [formField]="commentField"></app-form-field-error>
+			</div>
+			<button [disabled]="!reviewRorm.form.valid" type="submit" class="btn btn-primary">Post</button> <small class="text-danger">* All fields are required.</small>
+		</form>
+	</div>
+</div>
+
+<pre>
+	{{reviews | json}}
+</pre>

@@ -1,0 +1,51 @@
+.reviews-section {
+	margin-bottom: 50px;
+}
+.review{
+	margin-bottom: 30px;
+}
+
+.star-rating {
+	.star-rating-holder{
+		display: inline-flex;
+		flex-direction: row-reverse;
+		overflow: hidden;
+		position: relative;
+		&:hover{
+			label{
+				.fa:before {
+					content:"\f006" !important;
+				}
+			}
+			label:hover,
+			label:hover ~ input + label {
+				.fa:before {
+					content:"\f005" !important;
+				}
+			}
+		}
+	}
+	input {
+		display: none;
+	}
+	label{
+		cursor: pointer;
+		display: inline-block;
+		vertical-align: top;
+		margin: 0;
+		padding: 0 3px 0 0;
+		font-size: 22px;
+		line-height: 1;
+		color: orange;
+
+	}
+	:checked ~ label {
+		.fa:before {
+			content:"\f005";
+		}
+	}
+}
+
+.required {
+	color: red;
+}

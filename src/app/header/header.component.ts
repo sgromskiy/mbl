@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 
+import 'rxjs/add/operator/skipWhile';
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -11,10 +13,15 @@ export class HeaderComponent implements OnInit {
   constructor(public auth: AuthService) { }
 
   ngOnInit() {
-    this.auth.user$.subscribe( {next:(data) => {
-    	console.dir(data);
-    	this.user = data;
-    }});
+    this.auth.user$.skipWhile( user =>  typeof user._id !== "undefined").subscribe(
+      (data) => {
+        if(data && data.name !== ''){
+          this.user = data;
+        } else {
+          console.log('call me')
+          this.auth.getCurrentUser();
+        }
+    });
   }
 
 }

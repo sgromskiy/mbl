@@ -5,9 +5,10 @@ import * as auth0 from 'auth0-js';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { User } from '../shared/models/user';
 import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/switchMap';
+
 
 @Injectable()
 export class AuthService {
@@ -21,7 +22,8 @@ export class AuthService {
     scope: 'openid email'
   });
 
-  user$ = new Subject();
+  user$ = new BehaviorSubject<User>(new User({name: ''}));
+
 
   constructor(public router: Router, public http: Http, public httpClient: HttpClient ) {}
 
@@ -47,13 +49,10 @@ export class AuthService {
         .map(res => res.json())
         .subscribe(
           (data: any) => {
-            console.dir(data)
+            console.dir(data);
             authResult.userId = data._id;
             this.setSession(authResult);
-            this.getCurrentUser().subscribe(
-              val => {
-                this.user$.next(val);
-              })
+            this.getCurrentUser(data._id);
           }
         );
         
@@ -92,10 +91,15 @@ export class AuthService {
     return new Date().getTime() < expiresAt;
   }
 
-  public getCurrentUser() {
-    console.log('run get user');
-    console.log(localStorage.getItem('id_user'));
-    return this.httpClient.get(`/users/${localStorage.getItem('id_user')}`);
+  public getCurrentUser(Id?: string): void {
+    let id = (Id) ? Id : localStorage.getItem('id_user');
+    if(id !== "undefined"){
+      this.httpClient.get(`/users/${id}`).subscribe(
+        (val: User) => {
+          this.user$.next(new User(val));
+        }
+      );
+    }
   }
 
   public canActivate(): boolean {

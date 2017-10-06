@@ -1,0 +1,30 @@
+
+<div class="media book">
+	<img class="d-flex mr-3" [src]="mediaURL + book.Cover" alt="avatar">
+	<div class="media-body">
+		<strong class="user-name mb-2">{{book.Title}}</strong>
+		<div class="meta">
+			 By <em *ngFor="let author of book.Author; let isLast = last" class="book-author"><a [routerLink]="['/author', author.AuthorID]">{{author.AuthorName}}</a>{{isLast ? '' : ', '}}</em>
+			 Publised: <em>{{book.Published | date:'mediumDate'}}</em>
+		</div>
+		<span *ngFor="let genre of book.Genre" class="badge badge-primary">{{genre.Name}}</span>
+		<div [innerHTML]="book.Description"  class="description">
+		</div>
+		<ng-container [ngSwitch]="isFavorite">
+			<button (click)="removeFromFav()" *ngSwitchCase="true" class="btn btn-warning">Remove from Favorite</button>
+			<button (click)="addToFav()" *ngSwitchDefault class="btn btn-warning">Mark as Favorite</button>
+		</ng-container>
+		<ng-container [ngSwitch]="isRead">
+			<button (click)="removeFromRead()" *ngSwitchCase="true" class="btn btn-danger">Mark as Unread</button>
+			<button (click)="addToRead()" *ngSwitchDefault class="btn btn-danger">Mark as Raed</button>
+		</ng-container>
+	</div>
+</div>
+
+<app-review [reviews]="reviews" [BookID]="book._id" [AuthorID]="user._id" [AuthorName]="user.name"></app-review>
+
+<pre>
+	{{book | json}}
+</pre>
+
+

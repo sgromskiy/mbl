@@ -1,0 +1,15 @@
+<div class="book-list">
+	<div class="book-list-item" *ngFor="let book of books">
+		<a [routerLink]="['/book', book._id]" class="book-list-link">
+			<div class="cover">
+				<img [src]="mediaURL + book.Cover" alt="image description">
+			</div>
+			<div class="description">
+				<strong class="book-title">{{book.Title}}</strong>
+				<div class="book-authors">
+					by <em *ngFor="let author of book.Author; let isLast = last" class="book-author">{{author.Name}}{{isLast ? '' : ', '}}</em>
+				</div>
+			</div>
+		</a>
+	</div>
+</div>

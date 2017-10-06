@@ -1,0 +1,23 @@
+
+<div class="media user">
+	<img class="d-flex mr-3" [src]="user.picture" alt="avatar">
+	<div class="media-body align-self-center">
+		<strong class="user-name mb-2">{{user.name}}</strong>
+		Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+	</div>
+</div>
+
+<div class="pfofile-section">
+	<div class="section-header">
+		<h2>My favorite books</h2>
+	</div>
+	<app-book-list [books]="user.Favorite"></app-book-list>
+</div>
+
+<div class="pfofile-section">
+	<div class="section-header">
+		<h2>I've read these books</h2>
+	</div>
+	<app-book-list [books]="user.Read"></app-book-list>
+</div>
+

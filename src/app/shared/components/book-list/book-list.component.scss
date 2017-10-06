@@ -1,0 +1,30 @@
+.book-list {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0 -15px;
+
+	img{
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.cover {
+		position: relative;
+		padding-top: 148%;
+		height: 0;
+		overflow: hidden;
+		margin-bottom: 10px;
+	}
+}
+
+.book-list-item{
+	width: 25%;
+	padding: 0 15px 30px;
+}
+
+.book-list-link{
+	display: block;
+}

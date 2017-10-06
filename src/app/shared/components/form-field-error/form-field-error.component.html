@@ -1,0 +1,8 @@
+<div class="error-field-message" *ngIf="formField.invalid && formField.dirty">
+	<p class="text-danger" *ngIf="formField.errors.required">This field is required</p>
+	<p class="text-danger" *ngIf="formField.errors.minlength">You have to type at least {{formField.errors.minlength.requiredLength}} characters</p>
+	<p class="text-danger" *ngIf="formField.errors.url">This is not valid url</p>
+	<p class="text-danger" *ngIf="formField.errors.email">This is not valid e-mail</p>
+	<p class="text-danger" *ngIf="formField.errors.phone">This is not valid US phone number</p>
+	<p class="text-danger" *ngIf="formField.errors.number">This is not look like valid number</p>
+</div>
