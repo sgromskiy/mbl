@@ -1,4 +1,6 @@
-
+<pre>
+	{{user | json}}
+</pre>
 <div class="media book">
 	<img class="d-flex mr-3" [src]="mediaURL + book.Cover" alt="avatar">
 	<div class="media-body">
@@ -15,8 +17,8 @@
 			<button (click)="addToFav()" *ngSwitchDefault class="btn btn-warning">Mark as Favorite</button>
 		</ng-container>
 		<ng-container [ngSwitch]="isRead">
-			<button (click)="removeFromRead()" *ngSwitchCase="true" class="btn btn-danger">Mark as Unread</button>
-			<button (click)="addToRead()" *ngSwitchDefault class="btn btn-danger">Mark as Raed</button>
+			<button (click)="removeFromRead()" *ngSwitchCase="true" class="btn btn-danger">Remove from Read</button>
+			<button (click)="addToRead()" *ngSwitchDefault class="btn btn-danger">Mark as Read</button>
 		</ng-container>
 	</div>
 </div>

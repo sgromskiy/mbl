@@ -1,4 +1,10 @@
-
+{{user | json}}
+<br>
+<br>
+{{favorite | json}}
+<br>
+<br>
+{{read | json}}
 <div class="media user">
 	<img class="d-flex mr-3" [src]="user.picture" alt="avatar">
 	<div class="media-body align-self-center">
@@ -11,13 +17,13 @@
 	<div class="section-header">
 		<h2>My favorite books</h2>
 	</div>
-	<app-book-list [books]="user.Favorite"></app-book-list>
+	<app-book-list [books]="favorite"></app-book-list>
 </div>
 
 <div class="pfofile-section">
 	<div class="section-header">
 		<h2>I've read these books</h2>
 	</div>
-	<app-book-list [books]="user.Read"></app-book-list>
+	<app-book-list [books]="read"></app-book-list>
 </div>
 

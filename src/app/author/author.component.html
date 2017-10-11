@@ -1,0 +1,20 @@
+{{author | json}}
+<br>
+
+{{books | json}}
+<div class="media user">
+	<img class="d-flex mr-3" [src]="mediaURL + author.Photo[0]" alt="avatar">
+	<div class="media-body align-self-center">
+		<h2 class="user-name mb-2">{{author.Name}}</h2>
+		<span *ngFor="let genre of author.Genre" class="badge badge-primary">{{genre.Name}}</span>
+		<div class="bio" [innerHTML]="author.Bio"></div>
+	</div>
+</div>
+
+<div class="pfofile-section">
+	<div class="section-header">
+		<h2>Books</h2>
+	</div>
+	<app-book-list [books]="books"></app-book-list>
+</div>
+

@@ -20,8 +20,13 @@ import { ROUTES } from './app.routes';
 import { AuthService } from './auth/auth.service';
 import { ProfileService } from './profile/profile.service';
 import { ProfileResolver } from './profile/profile.resolver';
+import { UserResolver } from './profile/user.resolver';
 import { BookService } from './book/book.service';
 import { BookResolver } from './book/book.resolver';
+import { AuthorService } from './author/author.service';
+import { AuthorResolver } from './author/author.resolver';
+import { HomeService } from './home/home.service';
+import { HomeResolver } from './home/home.resolver';
 import { CallbackComponent } from './callback/callback.component';
 import { BookListComponent } from './shared/components/book-list/book-list.component';
 import { BookComponent } from './book/book.component';
@@ -29,6 +34,7 @@ import { ReviewComponent } from './review/review.component';
 import { ReviewService } from './review/review.service';
 import { ReviewResolver } from './review/review.resolver';
 import { FormFieldErrorComponent } from './shared/components/form-field-error/form-field-error.component';
+import { AuthorComponent } from './author/author.component';
 
 
 
@@ -43,7 +49,8 @@ import { FormFieldErrorComponent } from './shared/components/form-field-error/fo
     BookListComponent,
     BookComponent,
     ReviewComponent,
-    FormFieldErrorComponent
+    FormFieldErrorComponent,
+    AuthorComponent
   ],
   imports: [
     BrowserModule,
@@ -60,6 +67,11 @@ import { FormFieldErrorComponent } from './shared/components/form-field-error/fo
     BookResolver,
     ReviewService,
     ReviewResolver,
+    UserResolver,
+    AuthorService,
+    AuthorResolver,
+    HomeService,
+    HomeResolver,
    {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

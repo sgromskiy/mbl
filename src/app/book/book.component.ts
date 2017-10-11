@@ -26,6 +26,7 @@ export class BookComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.route.data.subscribe(({book, user, reviews}) => { 
       this.book = book;
       this.user = user;
@@ -36,18 +37,45 @@ export class BookComponent implements OnInit {
   }
 
   checkFavorite(id) {
-    this.isFavorite = this.user.Favorite.filter( b => b._id === id ).length > 0;
+    this.isFavorite = this.user.Favorite.includes(id);
   }
 
   checkRead(id) {
-    this.isRead = this.user.Read.filter( b => b._id === id ).length > 0;
+    this.isRead = this.user.Read.includes(id);
   }
 
   removeFromFav(){
-    this.service.removeFromFav(this.book._id).subscribe(
-        () => {
-          this.user.Favorite = this.user.Favorite.filter(bookId =>  bookId !== this.book._id);
+    this.service.removeFromFav(this.book._id, this.user).subscribe(
+        (user) => {
+          this.user = user;
           this.isFavorite = !this.isFavorite;
+        }
+    );
+  }
+
+  addToFav(){
+    this.service.addToFav(this.book._id, this.user).subscribe(
+        (user) => {
+          this.user = user;
+          this.isFavorite = !this.isFavorite;
+        }
+    );
+  }
+
+  removeFromRead(){
+    this.service.removeFromRead(this.book._id, this.user).subscribe(
+        (user) => {
+          this.user = user;
+          this.isRead = !this.isRead;
+        }
+    );
+  }
+
+  addToRead(){
+    this.service.addToRead(this.book._id, this.user).subscribe(
+        (user) => {
+          this.user = user;
+          this.isRead = !this.isRead;
         }
     );
   }

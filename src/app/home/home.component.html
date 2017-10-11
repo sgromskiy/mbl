@@ -1,4 +1,37 @@
-<h4>
-  home work!
-</h4>
+<div class="row">
+	<div class="col-md-3">
+		<div *ngIf="activeFilters.length !== 0" class="section">
+			<h4>Active filters:</h4>
+			<ul class="list-unstyled">
+				<li class="clearfix" *ngFor="let filter of activeFilters">
+					<button (click)="disableFilter(filter.type)" class="float-right btn ml-2 btn-outline-dark btn-sm">&times;</button>
+					<span>{{filter.value}}</span> 
+				</li>
+			</ul>
+		</div>
+		<div *ngIf="authorFilterVisible" class="section">
+			<h4>Filter by Autor:</h4>
+			<ul class="list-unstyled">
+				<li class="clickable clearfix" *ngFor="let author of authors" (click)="setAuthorFilter(author)">
+					<span class="float-right badge badge-pill badge-dark ml-2">{{author.Books.length}}</span>
+					<span>{{author.Name}}</span>
+				</li>
+			</ul>
+		</div>
+		<div *ngIf="genreFilterVisible" class="section">
+			<h4>Gilter by Genre:</h4>
+			<ul class="list-unstyled">
+				<li class="clickable" *ngFor="let genre of genres" (click)="setGenreFilter(genre)">
+					<span>{{genre.Name}}</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="col-md-9">
+		<h2>Find your book</h2>
+		<p>search form
+		<app-book-list [books]="filteredCollection" [user]="user"></app-book-list>
+	</div>
+</div>
+
 

@@ -1,13 +1,18 @@
-<div class="book-list">
+<p class="text-center" *ngIf="books.length === 0">Ups you haven't chosen one.</p>
+<div class="book-list" *ngIf="books.length !== 0">
 	<div class="book-list-item" *ngFor="let book of books">
 		<a [routerLink]="['/book', book._id]" class="book-list-link">
+			<div class="labels" *ngIf="user">
+					<span title="Read" *ngIf="isRead(book._id)" class="btn btn-danger read"><i class="fa fa-book" aria-hidden="true"></i></span>
+					<span title="Fvavorite" *ngIf="isFavorite(book._id)" class="btn btn-warning favorite "><i class="fa fa-heart" aria-hidden="true"></i></span>
+				</div>
 			<div class="cover">
 				<img [src]="mediaURL + book.Cover" alt="image description">
 			</div>
 			<div class="description">
 				<strong class="book-title">{{book.Title}}</strong>
 				<div class="book-authors">
-					by <em *ngFor="let author of book.Author; let isLast = last" class="book-author">{{author.Name}}{{isLast ? '' : ', '}}</em>
+					by <em *ngFor="let author of book.Author; let isLast = last" class="book-author">{{author.AuthorName}}{{isLast ? '' : ', '}}</em>
 				</div>
 			</div>
 		</a>

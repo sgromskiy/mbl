@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Book } from '../shared/models/book';
+import { User } from '../shared/models/user';
 import { HttpClient } from '@angular/common/http';
 //import { ErrorBusService } from '../error-bus/error-bus.service';
 import { Observable } from 'rxjs';
@@ -17,8 +18,38 @@ export class BookService {
      return this.http.get(`/books/${id}`)
   }
 
-  removeFromFav(id) {
-    return this.http.get();
+  removeFromFav(bookID, user): Observable<User> {
+    let newUser = {...user};
+    newUser.Favorite = user.Favorite.filter(id => id !== bookID);
+    return this.http.put(`/users/${user._id}`, newUser);
+  }
+
+  addToFav(bookID, user): Observable<User> {
+    let newUser = {...user};
+    newUser.Favorite = [ ...user.Favorite, bookID];
+    return this.http.put(`/users/${user._id}`, newUser);
+  }
+
+   removeFromRead(bookID, user): Observable<User> {
+    let newUser = {...user};
+    newUser.Read = user.Read.filter(id => id !== bookID);
+    return this.http.put(`/users/${user._id}`, newUser);
+  }
+
+  addToRead(bookID, user): Observable<User> {
+    let newUser = {...user};
+    newUser.Read = [ ...user.Read, bookID];
+    return this.http.put(`/users/${user._id}`, newUser);
+  }
+
+  getFavoriteBooks(arr): Observable<Book[]>{
+   //if(arr.length === 0) return Observable.from(arr);
+    return this.http.get(`/books?q={"_id": {"$in": ${JSON.stringify(arr)}}}`);
+  }
+
+  getReadBooks(arr): Observable<Book[]>{
+    //if(arr.length === 0) return Observable.from(arr);
+    return this.http.get(`/books?q={"_id": {"$in": ${JSON.stringify(arr)}}}`);
   }
 
   // getProjects(): Observable<User[]> {
