@@ -1,4 +1,4 @@
-<p class="text-center" *ngIf="books.length === 0">Ups you haven't chosen one.</p>
+<p class="text-center" *ngIf="books.length === 0">Ups, there is nothing to show.</p>
 <div class="book-list" *ngIf="books.length !== 0">
 	<div class="book-list-item" *ngFor="let book of books">
 		<a [routerLink]="['/book', book._id]" class="book-list-link">

@@ -4,6 +4,8 @@ import { Book } from '../shared/models/book';
 import { User } from '../shared/models/user';
 import { Review } from '../shared/models/review';
 import { BookService } from './book.service';
+import { AuthService } from '../auth/auth.service';
+import { Config_API } from '../api.config'
 
 @Component({
   selector: 'app-book',
@@ -20,16 +22,16 @@ export class BookComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private service: BookService
+    private service: BookService,
+    private auth: AuthService
    ) { 
-    this.mediaURL = 'https://mybooklib-7af0.restdb.io/media/';
+    this.mediaURL = Config_API.mediaURL;
   }
 
   ngOnInit() {
-
-    this.route.data.subscribe(({book, user, reviews}) => { 
+    this.auth.user$.subscribe(user => this.user = user);
+    this.route.data.subscribe(({book, reviews}) => { 
       this.book = book;
-      this.user = user;
       this.reviews = reviews;
       this.checkFavorite(book._id);
       this.checkRead(book._id);

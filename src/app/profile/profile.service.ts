@@ -10,7 +10,7 @@ export class ProfileService {
   constructor(
     private http: HttpClient,
     //private bus: ErrorBusService
-  ) { }
+  ) { console.log('profile service  init')}
 
 
   getUser(id: string): Observable<User> {

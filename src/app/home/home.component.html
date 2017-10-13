@@ -31,6 +31,7 @@
 		<h2>Find your book</h2>
 		<p>search form
 		<app-book-list [books]="filteredCollection" [user]="user"></app-book-list>
+		{{filteredCollection | json}}
 	</div>
 </div>
 

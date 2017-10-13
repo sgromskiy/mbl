@@ -4,6 +4,7 @@ import { User } from '../shared/models/user';
 import { Book } from '../shared/models/book';
 import { Author } from '../shared/models/author';
 import { HomeService } from './home.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -22,27 +23,56 @@ export class HomeComponent implements OnInit {
 
   constructor(
     public route: ActivatedRoute,
-    public service: HomeService
+    public service: HomeService,
+    public auth: AuthService
   ) { }
 
   ngOnInit() {
-    this.route.data.subscribe(({data}) => {
-       this.user = data.user;
-       this.books = data.books;
-       this.filteredCollection = [...data.books];
+    this.auth.user$.subscribe(user => this.user = user);
+    this.service.books$.subscribe(books => {
+      this.books = books;
+      this.filteredCollection = books;
     });
-    this.service.getAuthors().subscribe(
-      (authors) => {
-        this.authors = authors;
-        this.authorFilterVisible = true;
-      }
-    );
-    this.service.getGenges().subscribe(
-      (genres) => {
-        this.genres = genres;
-        this.genreFilterVisible = true;
-      }
-    );
+    this.service.authors$.subscribe(authors => {
+      this.authors = authors;
+      this.authorFilterVisible = true;
+    });
+    this.service.genres$.subscribe(genres => {
+      this.genres = genres
+      this.genreFilterVisible = true;
+    });
+    // this.route.data.subscribe(({data}) => {
+    //    this.books = data.books;
+    //    this.filteredCollection = [...data.books];
+    //    this.authors = data.authors;
+    //    this.authorFilterVisible = true;
+    //    this.genres = data.genres;
+    //    this.genreFilterVisible = true;
+    // });
+
+    // this.auth.user$.subscribe(user => this.user = user)
+    // this.service.getAllHomeData().subscribe(({books, authors, genres}) => {
+       
+    //    this.books = books;
+    //    this.filteredCollection = [...books];
+    //    this.authors = authors;
+    //     this.authorFilterVisible = true;
+    //     this.genres = genres;
+    //     this.genreFilterVisible = true;
+    // });
+
+    // this.service.getAuthors().subscribe(
+    //   (authors) => {
+    //     this.authors = authors;
+    //     this.authorFilterVisible = true;
+    //   }
+    // );
+    // this.service.getGenges().subscribe(
+    //   (genres) => {
+    //     this.genres = genres;
+    //     this.genreFilterVisible = true;
+    //   }
+    // );
     console.log('init home')
   }
 
@@ -75,11 +105,12 @@ export class HomeComponent implements OnInit {
 
   refilterCollection(){
     if(this.activeFilters.length === 0) { this.filteredCollection = this.books; return}
-    this.filteredCollection = this.filteredCollection.filter((book) => {
-      return this.activeFilters.some((filter) => {
-        return book[filter.type].some((el) => { return (el._id === filter.key || el.AuthorID === filter.key)} )
-      })
+    let collection = this.books;
+    this.activeFilters.forEach((f) => {
+      collection = collection.filter((book) => {
+        return book[f.type].some((el) => { return (el._id === f.key || el.AuthorID === f.key)});
+      });
     });
+    this.filteredCollection = collection;
   }
-
 }

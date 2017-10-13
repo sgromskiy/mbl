@@ -15,16 +15,16 @@ import { AuthorResolver } from './author/author.resolver';
 import { HomeResolver } from './home/home.resolver';
 
 export const ROUTES: Routes = [
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '', component: MainComponent, canActivate: [AuthService], children: [
     {path: 'home', component: HomeComponent, resolve: {data: HomeResolver}},
     {path: 'user/:userId', component: ProfileComponent, resolve: { data: ProfileResolver}},
     {path: 'author/:authorId', component: AuthorComponent, resolve: { author: AuthorResolver}},
     {path: 'book/:bookId', component: BookComponent, resolve: { 
       book: BookResolver,
-      user: UserResolver,
       reviews: ReviewResolver
     }}
   ]},
-  { path: 'callback', component: CallbackComponent },
-  { path: '**', redirectTo: 'home', pathMatch: 'full' }
+  { path: 'callback', component: CallbackComponent }
+  
 ];

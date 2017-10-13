@@ -5,7 +5,7 @@ import * as auth0 from 'auth0-js';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { Observable, Subject, BehaviorSubject, ReplaySubject } from 'rxjs';
 import { User } from '../shared/models/user';
 import 'rxjs/add/operator/map';
 
@@ -22,10 +22,12 @@ export class AuthService {
     scope: 'openid email'
   });
 
-  user$ = new BehaviorSubject<User>(new User({name: ''}));
+  user$ = new ReplaySubject<User>(1);
 
 
-  constructor(public router: Router, public http: Http, public httpClient: HttpClient ) {}
+  constructor(public router: Router, public http: Http, public httpClient: HttpClient ) {
+    
+  }
 
   public login(): void {
     this.auth0.authorize();
@@ -43,24 +45,27 @@ export class AuthService {
         let options = new RequestOptions({ headers: headers });
 
         this.http.get('https://mybooklib-7af0.restdb.io/auth/userinfo', options)
-        //.map(res => res.json())
-        //.switchMap((res) => this.httpClient.get(`/users/${res.json()._id}`))
-        //.switchMap((res) => this.httpClient.get('/books'))
         .map(res => res.json())
         .subscribe(
           (data: any) => {
             console.dir(data);
             authResult.userId = data._id;
             this.setSession(authResult);
-            this.getCurrentUser(data._id);
+            this.getCurrentUser(data._id).subscribe((u) => this.user$.next(new User(u)));
+            this.router.navigate(['/home']);
           }
         );
         
-        this.router.navigate(['/home']);
+        
       } else if (err) {
         this.router.navigate(['/home']);
         console.log(err);
         alert(`Error: ${err.error}. Check the console for further details.`);
+      } else {
+        if(this.isAuthenticated()){
+          let id = localStorage.getItem('id_user');
+          this.getCurrentUser(id).subscribe((u) => this.user$.next(new User(u)));
+        }
       }
     });
   }
@@ -81,7 +86,7 @@ export class AuthService {
     localStorage.removeItem('id_user');
     localStorage.removeItem('expires_at');
     // Go back to the home route
-    this.router.navigate(['/']);
+    this.login();
   }
 
   public isAuthenticated(): boolean {
@@ -91,15 +96,9 @@ export class AuthService {
     return new Date().getTime() < expiresAt;
   }
 
-  public getCurrentUser(Id?: string): void {
-    let id = (Id) ? Id : localStorage.getItem('id_user');
-    if(id !== "undefined"){
-      this.httpClient.get(`/users/${id}`).subscribe(
-        (val: User) => {
-          this.user$.next(new User(val));
-        }
-      );
-    }
+  public getCurrentUser(id) {
+    console.log('run get user')
+   return this.httpClient.get(`/users/${id}`).share();
   }
 
   public canActivate(): boolean {

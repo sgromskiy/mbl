@@ -9,7 +9,7 @@ import { Book } from '../shared/models/book';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-  user: User;
+  user: User = new User({});
   favorite: Book[];
   read: Book[];
 
@@ -18,6 +18,7 @@ export class ProfileComponent implements OnInit {
    }
 
   ngOnInit() {
+    console.log('init prof')
     this.route.data.subscribe(({data}) => {
     	this.user = data.user;
     	this.favorite = data.favorite;
